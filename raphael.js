@@ -1746,6 +1746,20 @@
             res.type = "image";
             return res;
         },
+        theGroup=function(svg,x,y,w,h){
+            var el=$("svg");
+            $(el,{x:x,y:y,width:w,height:h});
+            svg.canvas && svg.canvas[appendChild](el);
+            var res=new Element(el,svg);
+            res.attrs={x:x,y:y,width:w,height:h};
+            res.canvas=el;
+            res.type="svg";
+            var z;
+            for(z in paperproto){
+                res[z]=paperproto[z];
+            }
+            return res;
+        },
         theText = function (svg, x, y, text) {
             var el = $("text");
             $(el, {x: x, y: y, "text-anchor": "middle"});
@@ -2804,6 +2818,9 @@
     paperproto.set = function (itemsArray) {
         arguments[length] > 1 && (itemsArray = Array[proto].splice.call(arguments, 0, arguments[length]));
         return new Set(itemsArray);
+    };
+    paperproto.group=function(x,y,w,h){
+        return theGroup(this,x,y,w,h);
     };
     paperproto.setSize = setSize;
     paperproto.top = paperproto.bottom = null;
